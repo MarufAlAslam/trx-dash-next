@@ -1,0 +1,74 @@
+[
+    {
+        "id": "1",
+        "amount": "$250.00",
+        "date": "2025-07-30",
+        "status": "Completed",
+        "description": "Payment to ABC Corp",
+        "type": "debit",
+        "category": "Business"
+    },
+    {
+        "id": "2",
+        "amount": "$1,200.00",
+        "date": "2025-07-29",
+        "status": "Pending",
+        "description": "Salary deposit",
+        "type": "credit",
+        "category": "Income"
+    },
+    {
+        "id": "3",
+        "amount": "$45.99",
+        "date": "2025-07-28",
+        "status": "Completed",
+        "description": "Grocery store purchase",
+        "type": "debit",
+        "category": "Food & Dining"
+    },
+    {
+        "id": "4",
+        "amount": "$89.50",
+        "date": "2025-07-27",
+        "status": "Failed",
+        "description": "Online subscription",
+        "type": "debit",
+        "category": "Entertainment"
+    },
+    {
+        "id": "5",
+        "amount": "$500.00",
+        "date": "2025-07-26",
+        "status": "Completed",
+        "description": "Rent payment",
+        "type": "debit",
+        "category": "Housing"
+    },
+    {
+        "id": "6",
+        "amount": "$75.25",
+        "date": "2025-07-25",
+        "status": "Pending",
+        "description": "Gas station purchase",
+        "type": "debit",
+        "category": "Transportation"
+    },
+    {
+        "id": "7",
+        "amount": "$150.00",
+        "date": "2025-07-24",
+        "status": "Completed",
+        "description": "Freelance payment",
+        "type": "credit",
+        "category": "Income"
+    },
+    {
+        "id": "8",
+        "amount": "$25.99",
+        "date": "2025-07-23",
+        "status": "Failed",
+        "description": "Coffee subscription",
+        "type": "debit",
+        "category": "Food & Dining"
+    }
+]
