@@ -68,8 +68,8 @@ const Dashboard = () => {
 
   if (loading) {
     return (
-      <div className="bg-gray-50 flex justify-center items-center min-h-screen p-20 h-screen font-sans">
-        <div className="max-w-2xl w-2xl mx-auto bg-white rounded-3xl shadow-lg p-8">
+      <div className="bg-gray-50 min-h-screen p-4 sm:p-8 lg:p-20 font-sans">
+        <div className="max-w-4xl w-full mx-auto bg-white rounded-3xl shadow-lg p-6 sm:p-8">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#419AD6] mx-auto mb-4"></div>
             <p className="text-gray-600">Loading dashboard...</p>
@@ -81,8 +81,8 @@ const Dashboard = () => {
 
   if (error) {
     return (
-      <div className="bg-gray-50 flex justify-center items-center min-h-screen p-20 h-screen font-sans">
-        <div className="max-w-2xl w-2xl mx-auto bg-white rounded-3xl shadow-lg p-8">
+      <div className="bg-gray-50 min-h-screen p-4 sm:p-8 lg:p-20 font-sans">
+        <div className="max-w-4xl w-full mx-auto bg-white rounded-3xl shadow-lg p-6 sm:p-8">
           <div className="text-center">
             <div className="text-4xl mb-4">❌</div>
             <p className="text-red-500 font-semibold">Error: {error}</p>
@@ -99,13 +99,13 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="bg-gray-50 flex justify-center items-center min-h-screen p-20 h-screen font-sans">
-      <div className="max-w-2xl w-2xl mx-auto bg-white rounded-3xl shadow-lg p-8">
-        <h2 className="mb-2 font-extrabold tracking-wide text-lg flex items-center gap-2" style={{ color: '#419AD6' }}>
+    <div className="bg-gray-50 min-h-screen p-4 sm:p-8 lg:p-20 font-sans">
+      <div className="max-w-4xl w-full mx-auto bg-white rounded-3xl shadow-lg p-6 sm:p-8">
+        <h2 className="mb-2 font-extrabold tracking-wide text-lg sm:text-xl flex items-center gap-2" style={{ color: '#419AD6' }}>
           💰 Account Balance
         </h2>
         <div
-          className="text-5xl font-black mb-7 bg-clip-text text-transparent select-text"
+          className="text-3xl sm:text-4xl lg:text-5xl font-black mb-7 bg-clip-text text-transparent select-text"
           style={{
             backgroundImage: 'linear-gradient(to right, #075386, #419AD6)',
             WebkitBackgroundClip: 'text',
@@ -127,7 +127,7 @@ const Dashboard = () => {
               placeholder="Search transactions..."
               value={searchTerm}
               onChange={(e) => handleSearch(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#419AD6] focus:border-transparent"
+              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#419AD6] focus:border-transparent text-sm sm:text-base"
             />
             <div className="absolute right-3 top-3 text-gray-400">
               🔍
@@ -140,7 +140,7 @@ const Dashboard = () => {
               <button
                 key={status}
                 onClick={() => handleStatusFilter(status)}
-                className={`px-4 cursor-pointer py-2 rounded-lg text-sm font-medium transition-all ${
+                className={`px-3 sm:px-4 cursor-pointer py-2 rounded-lg text-xs sm:text-sm font-medium transition-all ${
                   statusFilter === status
                     ? 'bg-gradient-to-r from-[#075386] to-[#419AD6] text-white shadow-lg'
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
@@ -153,22 +153,22 @@ const Dashboard = () => {
         </div>
 
         {/* Recent Transactions */}
-        <h3 className="text-gray-900 font-bold mb-4 text-lg flex items-center gap-2">
+        <h3 className="text-gray-900 font-bold mb-4 text-lg sm:text-xl flex items-center gap-2">
           🧾 Transactions ({filteredTransactions.length})
         </h3>
         
         {filteredTransactions.length === 0 ? (
           <div className="text-center py-8 text-gray-500">
             <div className="text-4xl mb-2">📭</div>
-            <p>No transactions found</p>
+            <p className="text-sm sm:text-base">No transactions found</p>
           </div>
         ) : (
-          <ul className="list-none transition-all duration-100 p-0 m-0 max-h-96 overflow-y-auto">
+          <ul className="list-none transition-all duration-100 p-0 m-0 max-h-[60vh] sm:max-h-96 overflow-y-auto space-y-3">
             {filteredTransactions.map(tx => (
               <li
                 key={tx.id}
                 onClick={() => handleClick(tx.id)}
-                className={`flex justify-between items-center mb-4 py-3 px-4 rounded-xl shadow-sm border-l-8 cursor-pointer transition hover:bg-gray-100 ${tx.amount < 0 ? 'border-[#FF7C44] bg-red-50' : ' border-[#075386] bg-blue-50'
+                className={`flex flex-col sm:flex-row sm:justify-between sm:items-center p-4 rounded-xl shadow-sm border-l-8 cursor-pointer transition hover:bg-gray-100 ${tx.amount < 0 ? 'border-[#FF7C44] bg-red-50' : ' border-[#075386] bg-blue-50'
                   }`}
                 style={tx.amount >= 0 ? { borderLeftColor: '#075386' } : {}}
                 tabIndex={0}
@@ -177,9 +177,9 @@ const Dashboard = () => {
                   if (e.key === 'Enter' || e.key === ' ') handleClick(tx.id);
                 }}
               >
-                <span>
-                  <strong className="text-base">{tx.description}</strong>
-                  <div className="text-xs text-gray-400 flex items-center gap-2">
+                <div className="flex-1 min-w-0">
+                  <strong className="text-sm sm:text-base block truncate">{tx.description}</strong>
+                  <div className="text-xs text-gray-400 flex flex-wrap items-center gap-2 mt-1">
                     <span>{tx.date}</span>
                     {tx.status && (
                       <span className={`px-2 py-1 rounded-full text-xs font-medium ${
@@ -191,14 +191,16 @@ const Dashboard = () => {
                       </span>
                     )}
                   </div>
-                </span>
-                <span
-                  className={`font-bold text-base tracking-wide ${tx.amount < 0 ? 'text-red-400' : ''
-                    }`}
-                  style={tx.amount >= 0 ? { color: '#075386' } : {}}
-                >
-                  {tx.amount < 0 ? '−' : '+'}${Math.abs(tx.amount).toFixed(2)}
-                </span>
+                </div>
+                <div className="mt-2 sm:mt-0 sm:ml-4 flex-shrink-0 text-right">
+                  <span
+                    className={`font-bold text-sm sm:text-base tracking-wide ${tx.amount < 0 ? 'text-red-400' : ''
+                      }`}
+                    style={tx.amount >= 0 ? { color: '#075386' } : {}}
+                  >
+                    {tx.amount < 0 ? '−' : '+'}${Math.abs(tx.amount).toFixed(2)}
+                  </span>
+                </div>
               </li>
             ))}
           </ul>

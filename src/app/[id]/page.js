@@ -25,8 +25,8 @@ const TrxDetails = ({ params }) => {
     }, [resolvedParams.id]);
 
     if (loading) return (
-        <div className="bg-gray-50 flex justify-center items-center min-h-screen p-20 h-screen font-sans">
-            <div className="max-w-2xl w-2xl mx-auto bg-white rounded-3xl shadow-lg p-8">
+        <div className="bg-gray-50 min-h-screen p-4 sm:p-8 lg:p-20 font-sans">
+            <div className="max-w-4xl w-full mx-auto bg-white rounded-3xl shadow-lg p-6 sm:p-8">
                 <div className="text-center">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#419AD6] mx-auto mb-4"></div>
                     <p className="text-gray-600">Loading transaction details...</p>
@@ -36,8 +36,8 @@ const TrxDetails = ({ params }) => {
     );
     
     if (error) return (
-        <div className="bg-gray-50 flex justify-center items-center min-h-screen p-20 h-screen font-sans">
-            <div className="max-w-2xl w-2xl mx-auto bg-white rounded-3xl shadow-lg p-8">
+        <div className="bg-gray-50 min-h-screen p-4 sm:p-8 lg:p-20 font-sans">
+            <div className="max-w-4xl w-full mx-auto bg-white rounded-3xl shadow-lg p-6 sm:p-8">
                 <div className="text-center">
                     <div className="text-4xl mb-4">❌</div>
                     <p className="text-red-500 font-semibold">Error: {error}</p>
@@ -47,8 +47,8 @@ const TrxDetails = ({ params }) => {
     );
     
     if (!transaction) return (
-        <div className="bg-gray-50 flex justify-center items-center min-h-screen p-20 h-screen font-sans">
-            <div className="max-w-2xl w-2xl mx-auto bg-white rounded-3xl shadow-lg p-8">
+        <div className="bg-gray-50 min-h-screen p-4 sm:p-8 lg:p-20 font-sans">
+            <div className="max-w-4xl w-full mx-auto bg-white rounded-3xl shadow-lg p-6 sm:p-8">
                 <div className="text-center">
                     <div className="text-4xl mb-4">🔍</div>
                     <p className="text-gray-600 font-semibold">No transaction found.</p>
@@ -57,31 +57,33 @@ const TrxDetails = ({ params }) => {
         </div>
     );
 
-    // Determine if transaction amount is positive or negative
+    // Determine if transaction is credit or debit based on type from API
     const amount = parseFloat(transaction.amount.replace(/[$,]/g, ''));
-    const isCredit = amount > 0;
+    const isCredit = transaction.type === 'credit';
     const statusColor = transaction.status === 'Completed' ? 'text-green-600' : 
                        transaction.status === 'Pending' ? 'text-yellow-600' : 'text-red-600';
     const statusIcon = transaction.status === 'Completed' ? '✅' : 
                       transaction.status === 'Pending' ? '⏳' : '❌';
 
     return (
-        <div className="bg-gray-50 flex justify-center items-center min-h-screen p-20 h-screen font-sans">
-            <div className="max-w-2xl w-2xl mx-auto bg-white rounded-3xl shadow-lg p-8">
+        <div className="bg-gray-50 min-h-screen p-4 sm:p-8 lg:p-20 font-sans">
+            <div className="max-w-4xl w-full mx-auto bg-white rounded-3xl shadow-lg p-6 sm:p-8">
                 {/* Header */}
                 <div className="text-center mb-8">
-                    <h2 className="mb-2 font-extrabold tracking-wide text-lg flex items-center justify-center gap-2" style={{ color: '#419AD6' }}>
+                    <h2 className="mb-2 font-extrabold tracking-wide text-lg sm:text-xl flex items-center justify-center gap-2" style={{ color: '#419AD6' }}>
                         💳 Transaction Details
                     </h2>
                     <div
-                        className="text-4xl font-black mb-4 bg-clip-text text-transparent select-text"
+                        className="text-2xl sm:text-3xl lg:text-4xl font-black mb-4 bg-clip-text text-transparent select-text break-words"
                         style={{
-                            backgroundImage: 'linear-gradient(to right, #075386, #419AD6)',
+                            backgroundImage: isCredit 
+                                ? 'linear-gradient(to right, #10b981, #059669)' // Green gradient for credit
+                                : 'linear-gradient(to right, #ef4444, #dc2626)', // Red gradient for debit
                             WebkitBackgroundClip: 'text',
                             WebkitTextFillColor: 'transparent',
                         }}
                     >
-                        {isCredit ? '+' : '−'}{transaction.amount}
+                        {isCredit ? '+' : '−'}${amount.toFixed(2)}
                     </div>
                 </div>
 
@@ -90,50 +92,52 @@ const TrxDetails = ({ params }) => {
 
                 {/* Transaction Info */}
                 <div className="space-y-4">
-                    <div className={`p-4 rounded-xl border-l-8 ${isCredit ? 'border-[#075386] bg-blue-50' : 'border-[#FF7C44] bg-red-50'}`}>
-                        <div className="flex justify-between items-center">
-                            <span className="text-gray-600 font-medium">Transaction ID</span>
-                            <span className="font-bold text-gray-900">#{transaction.id}</span>
+                    <div className={`p-4 rounded-xl border-l-8 ${isCredit ? 'border-green-500 bg-green-50' : 'border-red-500 bg-red-50'}`}>
+                        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+                            <span className="text-gray-600 font-medium text-sm sm:text-base">Transaction ID</span>
+                            <span className="font-bold text-gray-900 text-sm sm:text-base">#{transaction.id}</span>
                         </div>
                     </div>
 
-                    <div className={`p-4 rounded-xl border-l-8 ${isCredit ? 'border-[#075386] bg-blue-50' : 'border-[#FF7C44] bg-red-50'}`}>
-                        <div className="flex justify-between items-center">
-                            <span className="text-gray-600 font-medium">Description</span>
-                            <span className="font-bold text-gray-900">{transaction.description}</span>
+                    <div className={`p-4 rounded-xl border-l-8 ${isCredit ? 'border-green-500 bg-green-50' : 'border-red-500 bg-red-50'}`}>
+                        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+                            <span className="text-gray-600 font-medium text-sm sm:text-base">Description</span>
+                            <span className="font-bold text-gray-900 text-sm sm:text-base text-right break-words">{transaction.description}</span>
                         </div>
                     </div>
 
-                    <div className={`p-4 rounded-xl border-l-8 ${isCredit ? 'border-[#075386] bg-blue-50' : 'border-[#FF7C44] bg-red-50'}`}>
-                        <div className="flex justify-between items-center">
-                            <span className="text-gray-600 font-medium">Date</span>
-                            <span className="font-bold text-gray-900">{transaction.date}</span>
+                    <div className={`p-4 rounded-xl border-l-8 ${isCredit ? 'border-green-500 bg-green-50' : 'border-red-500 bg-red-50'}`}>
+                        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+                            <span className="text-gray-600 font-medium text-sm sm:text-base">Date</span>
+                            <span className="font-bold text-gray-900 text-sm sm:text-base">{transaction.date}</span>
                         </div>
                     </div>
 
-                    <div className={`p-4 rounded-xl border-l-8 ${isCredit ? 'border-[#075386] bg-blue-50' : 'border-[#FF7C44] bg-red-50'}`}>
-                        <div className="flex justify-between items-center">
-                            <span className="text-gray-600 font-medium">Status</span>
-                            <span className={`font-bold flex items-center gap-2 ${statusColor}`}>
+                    <div className={`p-4 rounded-xl border-l-8 ${isCredit ? 'border-green-500 bg-green-50' : 'border-red-500 bg-red-50'}`}>
+                        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+                            <span className="text-gray-600 font-medium text-sm sm:text-base">Status</span>
+                            <span className={`font-bold flex items-center gap-2 text-sm sm:text-base ${statusColor}`}>
                                 {statusIcon} {transaction.status}
                             </span>
                         </div>
                     </div>
 
                     {transaction.type && (
-                        <div className={`p-4 rounded-xl border-l-8 ${isCredit ? 'border-[#075386] bg-blue-50' : 'border-[#FF7C44] bg-red-50'}`}>
-                            <div className="flex justify-between items-center">
-                                <span className="text-gray-600 font-medium">Type</span>
-                                <span className="font-bold text-gray-900 capitalize">{transaction.type}</span>
+                        <div className={`p-4 rounded-xl border-l-8 ${isCredit ? 'border-green-500 bg-green-50' : 'border-red-500 bg-red-50'}`}>
+                            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+                                <span className="text-gray-600 font-medium text-sm sm:text-base">Type</span>
+                                <span className={`font-bold capitalize text-sm sm:text-base ${isCredit ? 'text-green-700' : 'text-red-700'}`}>
+                                    {transaction.type}
+                                </span>
                             </div>
                         </div>
                     )}
 
                     {transaction.category && (
-                        <div className={`p-4 rounded-xl border-l-8 ${isCredit ? 'border-[#075386] bg-blue-50' : 'border-[#FF7C44] bg-red-50'}`}>
-                            <div className="flex justify-between items-center">
-                                <span className="text-gray-600 font-medium">Category</span>
-                                <span className="font-bold text-gray-900">{transaction.category}</span>
+                        <div className={`p-4 rounded-xl border-l-8 ${isCredit ? 'border-green-500 bg-green-50' : 'border-red-500 bg-red-50'}`}>
+                            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+                                <span className="text-gray-600 font-medium text-sm sm:text-base">Category</span>
+                                <span className="font-bold text-gray-900 text-sm sm:text-base text-right">{transaction.category}</span>
                             </div>
                         </div>
                     )}
@@ -143,7 +147,7 @@ const TrxDetails = ({ params }) => {
                 <div className="mt-8 text-center">
                     <button 
                         onClick={() => window.history.back()}
-                        className="px-6 cursor-pointer py-3 bg-gradient-to-r from-[#075386] to-[#419AD6] text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
+                        className="w-full sm:w-auto px-6 cursor-pointer py-3 bg-gradient-to-r from-[#075386] to-[#419AD6] text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 text-sm sm:text-base"
                     >
                         ← Back to Dashboard
                     </button>
