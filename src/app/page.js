@@ -72,7 +72,7 @@ const Dashboard = () => {
         <div className="max-w-4xl w-full mx-auto bg-white rounded-3xl shadow-lg p-6 sm:p-8">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#419AD6] mx-auto mb-4"></div>
-            <p className="text-gray-600">Loading dashboard...</p>
+            <p className="text-gray-600">Loading transactions...</p>
           </div>
         </div>
       </div>
